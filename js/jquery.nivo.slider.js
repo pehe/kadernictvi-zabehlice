@@ -7,7 +7,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  */
 
-jQuery(function($) {
+(function($) {
     var NivoSlider = function(element, options){
         // Defaults are below
         var settings = $.extend({}, $.fn.nivoSlider.defaults, options);
@@ -635,7 +635,7 @@ jQuery(function($) {
     
     //Default settings
     $.fn.nivoSlider.defaults = {
-        effect: 'sliceUp',
+        effect: 'random',
         slices: 15,
         boxCols: 8,
         boxRows: 4,
@@ -659,4 +659,4 @@ jQuery(function($) {
 
     $.fn._reverse = [].reverse;
     
-});
+})(jQuery);

@@ -10,29 +10,42 @@
  * @package SKT Cutsnstyle
  */
 
-get_header(); ?>
+get_header(); 
 
-<div class="container">
-     <div class="page_content">
-        <section class="site-main">
+if( of_get_option('singlelayout',true) != ''){
+	$layout = of_get_option('singlelayout');
+}
+?>
+<style>
+<?php
+if( of_get_option('singlelayout', true) == 'singleleft' ){
+	echo '#sidebar { float:left !important; }'; 
+}
+?>
+</style>
+
+<div class="content-area">
+    <div class="middle-align">
+        <div class="site-main <?php echo $layout; ?>" id="sitemain">
             <header class="page-header">
-				<h1 class="entry-title"><?php single_cat_title('Category: '); ?></h1>
+				<h1 class="page-title"><?php single_cat_title('Category: '); ?></h1>
             </header><!-- .page-header -->
 			<?php if ( have_posts() ) : ?>
-                <div class="blog-post">
-                    <?php /* Start the Loop */ ?>
-                    <?php while ( have_posts() ) : the_post(); ?>
-                        <?php get_template_part( 'content', get_post_format() ); ?>
-                    <?php endwhile; ?>
-                </div>
-                <?php skt_cutsnstyle_lite_pagination(); ?>
+				<?php /* Start the Loop */ ?>
+                <?php while ( have_posts() ) : the_post(); ?>
+                    <?php get_template_part( 'content', get_post_format() ); ?>
+                <?php endwhile; ?>
+                <?php skt_cutsnstyle_pagination(); ?>
             <?php else : ?>
                 <?php get_template_part( 'no-results', 'archive' ); ?>
             <?php endif; ?>
-       </section>
-       <?php get_sidebar();?>       
+        </div>
+        <?php 
+		if( $layout != 'sitefull' && $layout != 'nosidebar' ){
+		  get_sidebar('blog');
+		} ?>
         <div class="clear"></div>
-    </div><!-- site-aligner -->
-</div><!-- container -->
+    </div>
+</div>
 
 <?php get_footer(); ?>

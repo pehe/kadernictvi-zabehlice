@@ -1,5 +1,4 @@
 jQuery(document).ready(function(e) {
-    jQuery('.accordion-section-title').eq(0).after('<a style="position:relative;left:15px;padding:2px 10px;bottom:31px;background:#34c6f6;color:#ffffff;" href="http://www.sktthemes.net/shop/cutsnstyle/" target="_blank">Upgrade to PRO Version</a>');
-	jQuery('.accordion-section-title').eq(0).css('padding-bottom','35px');
-	jQuery('li#accordion-panel-widgets ul li .accordion-section-content').append('<br><strong>More Widgets in PRO Version</strong>');
+    jQuery('.accordion-section-title').eq(0).after('<span style="position:relative; left:15px; top:15px; padding:2px; background-color:#34c6f6; font-weight:bold; line-height:22px;">Check Appearance > Theme Options for Pro Settings</span>');
+	jQuery('.accordion-section-title').eq(0).css('padding-bottom','15px', 'padding-top','15px');
 });

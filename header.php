@@ -2,7 +2,7 @@
 /**
  * The Header for our theme.
  *
- * Displays all of the <head> section and everything up till <div class="container">
+ * Displays all of the <head> section and everything up till <div id="content">
  *
  * @package SKT Cutsnstyle
  */
@@ -10,131 +10,151 @@
 <html <?php language_attributes(); ?>>
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE">
+<meta name="viewport" content="width=device-width">
 <link rel="profile" href="http://gmpg.org/xfn/11">
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
-<?php wp_head(); ?>
-
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/js/html5.js"></script>
+<link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/ie.css" type="text/css" media="all" />
+<![endif]-->
+<?php 
+	wp_head(); 
+	$themename = wp_get_theme();
+	$themename = preg_replace("/\W/", "_", strtolower($themename) );
+	if( !get_option( $themename ) ) {
+	require get_template_directory() . '/index-default.php';
+	exit;
+	}
+?>
 </head>
 
 <body <?php body_class(); ?>>
-<div class="header">  
-        <div class="header-inner">
-                <div class="logo">
-                <?php skt_cutsnstyle_lite_the_custom_logo(); ?>
-                        <a href="<?php echo esc_url( home_url('/') ); ?>">
-                                <h1><?php bloginfo('name'); ?></h1>
-                                <span class="tagline"><?php bloginfo( 'description' ); ?></span>                          
-                        </a>                      
-                 </div><!-- logo --> 
-                 <div class="headerright">
-                 <?php if ( ! dynamic_sidebar( 'sidebar-header' ) ) : ?>
-                 <div class="ph-email-colmn">
-                   <?php if( get_theme_mod('contact_no', '(0712) 456 9190') ) { ?>
-                    <span class="phoneno"><?php echo get_theme_mod('contact_no', '(0712) 456 9190'); ?></span>
-                  <?php } ?>
-                  
-                  <?php if( get_theme_mod('contact_mail', 'contact@company.com') ) { ?>
-                    <a href="mailto:<?php echo get_theme_mod('contact_mail','contact@company.com'); ?>"><span class="emailicon"><?php echo get_theme_mod('contact_mail', 'contact@company.com'); ?></span></a>
-                  <?php } ?>                 
-                 </div>
-                  <div class="appoint-colmn">                  
-                    <?php if ( get_theme_mod('appointbutton_link', '#') ) { ?> 
-                    <a title="Book an Appointment" class="bookbutton" href="<?php echo esc_url(get_theme_mod('appointbutton_link','#')); ?>">Book an Appointment</a>
-                    <?php } ?>                               
-                 </div> 
-                 <?php endif; // end sidebar widget area ?>	                
-                 <div class="clear"></div>
-             </div><!-- .headerright -->
-                 <div class="clear"></div> 
-                <div class="toggle">
-                <a class="toggleMenu" href="#"><?php _e('Menu','skt-cutsnstyle-lite'); ?></a>
-                </div><!-- toggle -->
-                <div class="nav">                  
-                    <?php wp_nav_menu( array('theme_location' => 'primary')); ?>
-                </div><!-- nav -->
+<div class="header">
 
-                
-    </div><!-- header-inner -->
+<div class="header-inner">
+    <div class="logo">
+        <a href="<?php echo home_url('/'); ?>">
+            <?php if( of_get_option( 'logo', true ) != '' ) { ; ?>
+               <img src="<?php echo esc_url( of_get_option( 'logo', true )); ?>" / >
+            <?php } else { ?>
+                <h1><?php bloginfo('name'); ?></h1>
+            <?php } ?> 
+            	<span class="tagline"><?php bloginfo( 'description' ); ?></span>
+        </a>
+    </div><!-- logo -->  
+                 
+    <div class="header_info">
+       <?php if(!dynamic_sidebar('header-widget')): ?>
+            <div class="apointment"><?php echo of_get_option('headerinfo'); ?></div>	
+            <div class="phoneemailfix">
+            <span class="phone-no"><i class="fa fa-phone"></i><a href="tel:<?php echo of_get_option('phone',true); ?>"> <?php echo of_get_option('phone'); ?></a></span>
+            <span class="email-id"><i class="fa fa-envelope-o"></i><a href="mailto:<?php echo of_get_option('email',true); ?>"> <?php echo of_get_option('email',true) ; ?></a></span>
+            </div>
+        <?php endif; ?>
+    <div class="clear"></div>
+     </div><!--header_info-->
+ <div class="clear"></div>
+                                
+                <div class="toggle">
+                <a class="toggleMenu" href="#"><?php _e('Menu','skt-cutsnstyle'); ?></a>
+                </div><!-- toggle -->
+                <div class="nav">                   
+                    <?php wp_nav_menu( array('theme_location' => 'primary') ); ?>
+                </div><!-- nav --><div class="clear"></div>
+</div><!-- header-inner -->
 </div><!-- header -->
 
-<?php if ( is_front_page() && ! is_home() ) { ?>
-  <div style="display:none"></div> 
-<?php } else { ?>
- <div class="space30"></div> 
-<?php } ?>
-  
-<?php if ( is_front_page() && ! is_home() ) { ?>
-<!-- Slider Section -->
-<?php for($sld=7; $sld<10; $sld++) { ?>
-	<?php if( get_theme_mod('page-setting'.$sld)) { ?>
-     <?php $slidequery = new WP_query('page_id='.get_theme_mod('page-setting'.$sld,true)); ?>
-		<?php while( $slidequery->have_posts() ) : $slidequery->the_post();
-        $image = wp_get_attachment_url( get_post_thumbnail_id($post->ID));
-        $img_arr[] = $image;
-        $id_arr[] = $post->ID;
-        endwhile;
-  	  }
-    }
-?>
-<?php if(!empty($id_arr)){ ?>
-<section id="home_slider">
-  <div class="slider-wrapper theme-default">
-    <div id="slider" class="nivoSlider">
-      <?php 
-	$i=1;
-	foreach($img_arr as $url){ ?>
-      <img src="<?php echo $url; ?>" title="#slidecaption<?php echo $i; ?>" />
-      <?php $i++; }  ?>
-    </div>
-		<?php 
-        $i=1;
-        foreach($id_arr as $id){ 
-        $title = get_the_title( $id ); 
-        $post = get_post($id); 
-        $content = apply_filters('the_content', substr(strip_tags($post->post_content), 0, 100)); 
-        ?>
-    <div id="slidecaption<?php echo $i; ?>" class="nivo-html-caption">
-      <div class="slide_info">
-        <h2><?php echo $title; ?></h2>
-        <p><?php echo $content; ?></p>
-        <div class="clear"></div>
-        <div class="slide_more"><a href="<?php the_permalink(); ?>">
-          <?php esc_attr_e('Read More', 'skt-cutsnstyle-lite');?>
-          </a></div>
-      </div>
-    </div>
-    <?php $i++; } ?>
-  </div>
-  <div class="clear"></div>
-</section>
-<?php } else { ?>
-<section id="home_slider">
-  <div class="slider-wrapper theme-default">
-    <div id="slider" class="nivoSlider"> <img src="<?php echo esc_url(get_template_directory_uri()); ?>/images/slides/slider1.jpg" alt="" title="#slidecaption1" /> <img src="<?php echo esc_url(get_template_directory_uri()); ?>/images/slides/slider2.jpg" alt="" title="#slidecaption2" /> <img src="<?php echo esc_url(get_template_directory_uri()); ?>/images/slides/slider3.jpg" alt="" title="#slidecaption3" /> </div>
-    <div id="slidecaption1" class="nivo-html-caption">
-      <div class="slide_info">
-        <h2>
-          <?php esc_html_e('Create Your Hair Style with Us', 'skt-cutsnstyle-lite');?>
-        </h2>
-      </div>
-    </div>
-    <div id="slidecaption2" class="nivo-html-caption">
-      <div class="slide_info">
-        <h2>
-          <?php esc_html_e('Living and Lifestyle Title', 'skt-cutsnstyle-lite'); ?>
-        </h2>
-      </div>
-    </div>
-    <div id="slidecaption3" class="nivo-html-caption">
-      <div class="slide_info">
-        <h2>
-          <?php esc_html_e('Create Your Hair Style with Us', 'skt-cutsnstyle-lite');?>
-        </h2>
-      </div>
-    </div>
-  </div>
-  <div class="clear"></div>
-</section>
-<!-- Slider Section -->
-<?php } } ?>
+
+<?php if ( is_home() || is_front_page() ) { ?>
+<?php if( of_get_option('customslider',true) == ''){ ?>
+    <div class="slider-main">
+       <?php
+			$slAr = array();
+			$m = 0;
+			for ($i=1; $i<11; $i++) {
+				if ( of_get_option('slide'.$i, true) != "" ) {
+					$imgSrc 	= of_get_option('slide'.$i, true);
+					$imglink	= of_get_option('slidelink'.$i, true);
+					$slidebutton	= of_get_option('slidebutton'.$i, true);
+					$slideurl	= of_get_option('slideurl'.$i, true);
+					if ( strlen($imgSrc) > 10 ) {
+						$slAr[$m]['image_src'] = of_get_option('slide'.$i, true);
+						$slAr[$m]['image_button'] = of_get_option('slidebutton'.$i, true);
+						$slAr[$m]['image_url'] = of_get_option('slidelink'.$i, true);
+						$m++;
+					}
+				}
+			}
+			$slideno = array();
+			if( $slAr > 0 ){
+				$n = 0;?>
+                <div id="slider" class="nivoSlider">
+                <?php 
+                foreach( $slAr as $sv ){
+                    $n++; ?><img src="<?php echo esc_url($sv['image_src']); ?>" alt="<?php echo esc_attr($sv['image_title']);?>" title="<?php echo '#slidecaption'.$n ; ?>"/><?php
+                    $slideno[] = $n;
+                }
+                ?>
+                </div> 
+                
+       
+
+                 <?php
+                foreach( $slideno as $sln ){ ?>
+                    <div id="slidecaption<?php echo $sln; ?>" class="nivo-html-caption">
+                    <div class="slide_info">
+                        <?php if( of_get_option('slidetitle'.$sln, true) != '' ){ ?>                          
+                        <a href="<?php echo of_get_option('slideurl'.$sln, true); ?>"><h2><?php echo of_get_option('slidetitle'.$sln, true); ?></h2></a>						
+                        <?php } ?>
+                         <?php if( of_get_option('slidedesc'.$sln, true) != '' ){ ?>                         
+                             <p><?php echo do_shortcode(of_get_option('slidedesc'.$sln, true)); ?></p>
+                         <?php } ?>						                        
+                        <?php if( of_get_option('slideurl'.$sln, true) != '' ){ ?>
+                             <a class="button" href="<?php echo of_get_option('slideurl'.$sln, true); ?>">
+							   <?php echo of_get_option('slidebutton'.$sln, true); ?>
+                             </a>
+                         <?php } ?>  
+                        
+                    </div>
+                    </div><?php } ?>
+                
+        <div class="clear"></div>        
+		<?php if( of_get_option('openingtiming') != ''){ ?>
+        <div class="time-table">          
+             <?php echo do_shortcode(of_get_option('openingtiming', true)); ?>
+        </div>
+          <?php } ?>
+                </div>
+                <div class="clear"></div><?php } ?>
+                
+
+        </div>
+        
+
+    </div><!-- slider -->
+    <?php } else {
+ $short_code = of_get_option('customslider');
+ echo do_shortcode($short_code);
+ } ?>
+	<?php } else { ?>        
+			<div class="innerbanner">                 
+           <?php
+			$header_image = get_header_image();
+			if( is_single() || is_archive() || is_category() || is_author()|| is_search()) { 
+        		echo '<img src="'.of_get_option('innerpagebanner', true ).'" alt="">';
+			}
+			elseif( has_post_thumbnail() ) {
+				$src = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' );
+				$thumbnailSrc = $src[0];
+				echo '<img src="'.$thumbnailSrc.'" alt="">';
+			} 
+			elseif ( ! empty( $header_image ) ) {
+				echo '<img src="'.esc_url( $header_image ).'" width="'.get_custom_header()->width.'" height="'.get_custom_header()->height.'" alt="" />';
+            }	
+			else { 
+            	echo '<img src="'.of_get_option('innerpagebanner', true ).'" alt="">';
+		    } ?>
+            </div> 
+	<?php }	?>
+    <?php include ('page-box.php'); ?>

@@ -3,31 +3,31 @@
  * @package SKT Cutsnstyle
  * Setup the WordPress core custom header feature.
  *
- * @uses skt_cutsnstyle_lite_header_style()
- * @uses skt_cutsnstyle_lite_admin_header_style()
- * @uses skt_cutsnstyle_lite_admin_header_image()
+ * @uses skt_cutsnstyle_header_style()
+ * @uses skt_cutsnstyle_admin_header_style()
+ * @uses skt_cutsnstyle_admin_header_image()
 
  */
-function skt_cutsnstyle_lite_custom_header_setup() {
-	add_theme_support( 'custom-header', apply_filters( 'skt_cutsnstyle_lite_custom_header_args', array(
-		//'default-image'          => get_template_directory_uri().'/images/banner_bg.jpg',
+function skt_cutsnstyle_custom_header_setup() {
+add_theme_support( 'custom-header', apply_filters( 'skt_cutsnstyle_custom_header_args', array(
+		//'default-image'          => get_template_directory_uri().'/images/default-banner.jpg',
 		'default-text-color'     => 'fff',
-		'width'                  => 1600,
-		'height'                 => 200,
-		'wp-head-callback'       => 'skt_cutsnstyle_lite_header_style',
-		'admin-head-callback'    => 'skt_cutsnstyle_lite_admin_header_style',
-		'admin-preview-callback' => 'skt_cutsnstyle_lite_admin_header_image',
+		'width'                  => 1400,
+		'height'                 => 272,
+		'wp-head-callback'       => 'skt_cutsnstyle_header_style',
+		'admin-head-callback'    => 'skt_cutsnstyle_admin_header_style',
+		'admin-preview-callback' => 'skt_cutsnstyle_admin_header_image',
 	) ) );
 }
-add_action( 'after_setup_theme', 'skt_cutsnstyle_lite_custom_header_setup' );
+add_action( 'after_setup_theme', 'skt_cutsnstyle_custom_header_setup' );
 
-if ( ! function_exists( 'skt_cutsnstyle_lite_header_style' ) ) :
+if ( ! function_exists( 'skt_cutsnstyle_header_style' ) ) :
 /**
  * Styles the header image and text displayed on the blog
  *
- * @see skt_cutsnstyle_lite_custom_header_setup().
+ * @see skt_cutsnstyle_custom_header_setup().
  */
-function skt_cutsnstyle_lite_header_style() {
+function skt_cutsnstyle_header_style() {
 	$header_text_color = get_header_textcolor();
 	?>
 	<style type="text/css">
@@ -35,28 +35,28 @@ function skt_cutsnstyle_lite_header_style() {
 		//Check if user has defined any header image.
 		if ( get_header_image() ) :
 	?>
-		.header{
-			background: url(<?php echo get_header_image(); ?>) no-repeat;
+		.innerbanner123{
+			background: url(<?php echo get_header_image(); ?>) no-repeat #111;
 			background-position: center top;
 		}
 	<?php endif; ?>	
 	</style>
 	<?php
 }
-endif; // skt_cutsnstyle_lite_header_style
+endif; // skt_cutsnstyle_header_style
 
-if ( ! function_exists( 'skt_cutsnstyle_lite_admin_header_style' ) ) :
+if ( ! function_exists( 'skt_cutsnstyle_admin_header_style' ) ) :
 /**
  * Styles the header image displayed on the Appearance > Header admin panel.
  *
- * @see skt_cutsnstyle_lite_custom_header_setup().
+ * @see skt_cutsnstyle_custom_header_setup().
  */
-function skt_cutsnstyle_lite_admin_header_style() {?>
+function skt_cutsnstyle_admin_header_style() {?>
 	<style type="text/css">
 	.appearance_page_custom-header #headimg { border: none; }
 	</style><?php
 }
-endif; // skt_cutsnstyle_lite_admin_header_style
+endif; // skt_cutsnstyle_admin_header_style
 
 
 add_action( 'admin_head', 'admin_header_css' );
@@ -65,13 +65,13 @@ function admin_header_css(){ ?>
 }
 
 
-if ( ! function_exists( 'skt_cutsnstyle_lite_admin_header_image' ) ) :
+if ( ! function_exists( 'skt_cutsnstyle_admin_header_image' ) ) :
 /**
  * Custom header image markup displayed on the Appearance > Header admin panel.
  *
- * @see skt_cutsnstyle_lite_custom_header_setup().
+ * @see skt_cutsnstyle_custom_header_setup().
  */
-function skt_cutsnstyle_lite_admin_header_image() {
+function skt_cutsnstyle_admin_header_image() {
 	$style = sprintf( ' style="color:#%s;"', get_header_textcolor() );
 ?>
 	<div id="headimg">
@@ -81,4 +81,8 @@ function skt_cutsnstyle_lite_admin_header_image() {
 	</div>
 <?php    
 }
-endif; // skt_cutsnstyle_lite_admin_header_image 
+endif; // skt_cutsnstyle_admin_header_image 
+
+
+define('SKT_URL','http://www.sktthemes.net');
+define('SKT_THEME_URL','http://www.sktthemes.net/themes');

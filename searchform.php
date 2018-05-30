@@ -5,10 +5,9 @@
  * @package SKT Cutsnstyle
  */
 ?>
-<form role="search" method="get" class="search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
-	<label>
-		<?php /*<span class="screen-reader-text"><?php _ex( 'Search for:', 'label', 'skt-cutsnstyle-lite' ); ?></span>*/ ?>
-		<input type="search" class="search-field" placeholder="<?php echo esc_attr_x( 'Search...', 'placeholder', 'skt-cutsnstyle-lite' ); ?>" value="<?php echo esc_attr( get_search_query() ); ?>" name="s">
-	</label>
-	<input type="submit" class="search-submit" value="<?php echo esc_attr_x( 'Search', 'submit button', 'skt-cutsnstyle-lite' ); ?>">
+<form role="search" method="get" class="searchbox" action="<?php echo esc_url( home_url( '/' ) ); ?>">		
+	<input type="search" class="searchbox-input" placeholder="<?php echo esc_attr_x( 'Search...', 'placeholder', 'skt-cutsnstyle' ); ?>" value="<?php echo esc_attr( get_search_query() ); ?>" name="s" onkeyup="buttonUp();">
+	<input type="submit" class="" value="<?php echo esc_attr_x( '', 'submit button', 'skt-cutsnstyle' ); ?>">
+     <span class="searchbox-icon"></span>
 </form>
+     <div class="clear"></div>

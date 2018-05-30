@@ -1,24 +1,24 @@
-jQuery(document).ready(function() {
+$(document).ready(function() {
 
 	// Grayscale images on Safari and Opera browsers
 	if(getBrowser()=='opera' || getBrowser()=='safari'){
-		var jQueryimages = jQuery("img")
-		, imageCount = jQueryimages.length
+		var $images = $("img")
+		, imageCount = $images.length
 		, counter = 0;
 
 		// One instead of on, because it need only fire once per image
-		jQueryimages.one("load",function(){
+		$images.one("load",function(){
 			// increment counter every time an image finishes loading
 			counter++;
 			if (counter == imageCount) {
 				// do stuff when all have loaded
-				grayscale(jQuery('img'));
-				jQuery("img").hover(
+				grayscale($('img'));
+				$("img").hover(
 					function () {
-						grayscale.reset(jQuery(this));
+						grayscale.reset($(this));
 					}, 
 					function () {
-						grayscale(jQuery(this));
+						grayscale($(this));
 					}
 				);
 			}
@@ -26,7 +26,7 @@ jQuery(document).ready(function() {
 		if (this.complete) {
 			// manually trigger load event in
 			// event of a cache pull
-				jQuery(this).trigger("load");
+				$(this).trigger("load");
 			}
 		});
 	};
@@ -34,10 +34,10 @@ jQuery(document).ready(function() {
 	
 	// Grayscale images only on browsers IE10+ since they removed support for CSS grayscale filter
 	if (getInternetExplorerVersion() >= 10){
-		jQuery('img').each(function(){
-			var el = jQuery(this);
+		$('img').each(function(){
+			var el = $(this);
 			el.css({"position":"absolute"}).wrap("<div class='img_wrapper' style='display: inline-block'>").clone().addClass('img_grayscale').css({"position":"absolute","z-index":"5","opacity":"0"}).insertBefore(el).queue(function(){
-				var el = jQuery(this);
+				var el = $(this);
 				el.parent().css({"width":this.width,"height":this.height});
 				el.dequeue();
 			});
@@ -45,12 +45,12 @@ jQuery(document).ready(function() {
 		});
 		
 		// Quick animation on IE10+ 
-		jQuery('img').hover(
+		$('img').hover(
 			function () {
-				jQuery(this).parent().find('img:first').stop().animate({opacity:1}, 200);
+				$(this).parent().find('img:first').stop().animate({opacity:1}, 200);
 			}, 
 			function () {
-				jQuery('.img_grayscale').stop().animate({opacity:0}, 200);
+				$('.img_grayscale').stop().animate({opacity:0}, 200);
 			}
 		);	
 		
@@ -80,42 +80,42 @@ jQuery(document).ready(function() {
 	// This block simply ads a corresponding class to the body tag so that we can target browsers with CSS classes
 	if(getBrowser()=='mozilla'){
 		// Mozilla
-		jQuery('body').addClass('mozilla');
+		$('body').addClass('mozilla');
 	}
 	else if(getBrowser()=='ie'){
 		// IE Favourite
-		jQuery('body').addClass('ie');
+		$('body').addClass('ie');
 	}
 	else if(getBrowser()=='opera'){
 		// Opera
-		jQuery('body').addClass('opera');
+		$('body').addClass('opera');
 	}           
 	else if (getBrowser()=='safari'){ // safari
 		// Safari
-		jQuery('body').addClass('safari');
+		$('body').addClass('safari');
 	}
 	else if(getBrowser()=='chrome'){
 		// Chrome
-		jQuery('body').addClass('chrome');
+		$('body').addClass('chrome');
 	};
 	if (getInternetExplorerVersion() >= 10){
-		jQuery('body').addClass('ie11');
+		$('body').addClass('ie11');
 	};
 
 	// Detection function to tell what kind of browser is used
 	function getBrowser(){
 		var userAgent = navigator.userAgent.toLowerCase();
-		jQuery.browser.chrome = /chrome/.test(userAgent);
-		jQuery.browser.safari= /webkit/.test(userAgent);
-		jQuery.browser.opera=/opera/.test(userAgent);
-		jQuery.browser.msie=/msie/.test( userAgent ) && !/opera/.test( userAgent );
-		jQuery.browser.mozilla= /mozilla/.test( userAgent ) && !/(compatible|webkit)/.test( userAgent ) || /firefox/.test(userAgent);
+		$.browser.chrome = /chrome/.test(userAgent);
+		$.browser.safari= /webkit/.test(userAgent);
+		$.browser.opera=/opera/.test(userAgent);
+		$.browser.msie=/msie/.test( userAgent ) && !/opera/.test( userAgent );
+		$.browser.mozilla= /mozilla/.test( userAgent ) && !/(compatible|webkit)/.test( userAgent ) || /firefox/.test(userAgent);
 
-		if(jQuery.browser.chrome) return "chrome";
-		if(jQuery.browser.mozilla) return "mozilla";
-		if(jQuery.browser.opera) return "opera";
-		if(jQuery.browser.safari) return "safari";
-		if(jQuery.browser.msie) return "ie";
+		if($.browser.chrome) return "chrome";
+		if($.browser.mozilla) return "mozilla";
+		if($.browser.opera) return "opera";
+		if($.browser.safari) return "safari";
+		if($.browser.msie) return "ie";
 	};
 	
 	// Since IE11 can not be detected like this because the new user agent on IE11 is trying to hide as Mozilla
@@ -126,13 +126,13 @@ jQuery(document).ready(function() {
 			var ua = navigator.userAgent;
 			var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
 			if (re.exec(ua) != null)
-			rv = parseFloat( RegExp.jQuery1 );
+			rv = parseFloat( RegExp.$1 );
 		}
 		else if (navigator.appName == 'Netscape'){
 			var ua = navigator.userAgent;
 			var re  = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
 			if (re.exec(ua) != null)
-			rv = parseFloat( RegExp.jQuery1 );
+			rv = parseFloat( RegExp.$1 );
 		}
 		return rv;
 	};
